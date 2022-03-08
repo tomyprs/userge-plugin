@@ -10,7 +10,7 @@
 
 
 from userge import Message, userge
-from userge.plugins.sys_util import get_response
+from userge.plugins.sys_util.helper import get_response
 from . import LASTFM_USERNAME, LASTFM_API_KEY
 
 API = "http://ws.audioscrobbler.com/2.0"
