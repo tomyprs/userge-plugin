@@ -13,10 +13,8 @@ import json
 
 from userge import userge, Message
 
-
 class QuotlyException(Exception):
     pass
-
 
 async def get_message_sender_id(msg: Message):
     msg_reply = msg.reply_to_message
@@ -36,7 +34,6 @@ async def get_message_sender_id(msg: Message):
             return msg_reply.sender_chat.id
         else:
             return 1
-
 
 async def get_message_sender_name(msg: Message):
     msg_reply = msg.reply_to_message
@@ -62,7 +59,6 @@ async def get_message_sender_name(msg: Message):
             return msg_reply.sender_chat.title
         else:
             return ""
-
 
 async def get_message_sender_username(msg: Message):
     msg_reply = msg.reply_to_message
@@ -91,10 +87,9 @@ async def get_message_sender_username(msg: Message):
             if msg_reply.sender_chat.username:
                 return msg_reply.sender_chat.username
             else:
-                return ""
+                return""
         else:
             return ""
-
 
 async def get_message_sender_photo(msg: Message):
     msg_reply = msg.reply_to_message
@@ -147,7 +142,6 @@ async def get_message_sender_photo(msg: Message):
         else:
             return ""
 
-
 async def get_text_or_caption(msg: Message):
     msg_reply = msg.reply_to_message
     if msg_reply.text:
@@ -156,8 +150,7 @@ async def get_text_or_caption(msg: Message):
         return msg_reply.caption
     else:
         return ""
-
-
+ 
 async def pyrogram_to_quotly(messages):
     if not isinstance(messages, list):
         messages = [messages]
@@ -195,10 +188,16 @@ async def pyrogram_to_quotly(messages):
         the_message_dict_to_append["avatar"] = True
         the_message_dict_to_append["from"] = {}
         the_message_dict_to_append["from"]["id"] = await get_message_sender_id(message)
-        the_message_dict_to_append["from"]["name"] = await get_message_sender_name(message)
-        the_message_dict_to_append["from"]["username"] = await get_message_sender_username(message)
+        the_message_dict_to_append["from"]["name"] = await get_message_sender_name(
+            message
+        )
+        the_message_dict_to_append["from"][
+            "username"
+        ] = await get_message_sender_username(message)
         the_message_dict_to_append["from"]["type"] = message.chat.type
-        the_message_dict_to_append["from"]["photo"] = await get_message_sender_photo(message)
+        the_message_dict_to_append["from"]["photo"] = await get_message_sender_photo(
+            message
+        )
         if message.reply_to_message:
             the_message_dict_to_append["replyMessage"] = {
                 "name": await get_message_sender_name(message.reply_to_message),
@@ -215,7 +214,6 @@ async def pyrogram_to_quotly(messages):
         else:
             raise QuotlyException(data.json())
 
-
 def isArgInt(txt) -> list:
     count = txt
     try:
@@ -224,15 +222,10 @@ def isArgInt(txt) -> list:
     except ValueError:
         return [False, 0]
 
-
-@userge.on_cmd(
-    "q",
-    about={
-        "header": "Quotly-ify a nice quote",
-        "description": "Make an quote sticker like a Quotly.",
-        "usage": "{tr}q [reply to message]",
-    },
-)
+@userge.on_cmd("q", about={
+    'header': "Quotly-ify a nice quote",
+    'description': "Make an quote sticker like a Quotly.",
+    'usage': "{tr}q [reply to message]"})
 async def quotly_cmd(msg: Message):
     if len(msg.text.split()) > 1:
         check_arg = isArgInt(msg.command[1])
@@ -246,8 +239,8 @@ async def quotly_cmd(msg: Message):
                         for i in await message.client.get_messages(
                             chat_id=msg.chat.id,
                             message_ids=range(
-                                msg.reply_to_message.message_id,
-                                msg.message_id + (check_arg[1] + 5),
+                                msg.message_id,
+                                msg.reply_to_message.message_id + (check_arg[1] + 5),
                             ),
                             replies=-1,
                         )
@@ -259,6 +252,7 @@ async def quotly_cmd(msg: Message):
                     make_quotly = await pyrogram_to_quotly(messages)
                     bio_sticker = BytesIO(make_quotly)
                     bio_sticker.name = "biosticker.webp"
+                    await message.delete()
                     return await msg.reply_sticker(bio_sticker)
                 except:
                     return await msg.edit("¯\\_(ツ)_/¯")
