@@ -13,87 +13,96 @@ import json
 
 from userge import userge, Message
 
+
 class QuotlyException(Exception):
     pass
 
+
 async def get_message_sender_id(msg: Message):
-    if msg.forward_date:
-        if msg.forward_sender_name:
+    msg_reply = msg.reply_to_message
+    if msg_reply.forward_date:
+        if msg_reply.forward_sender_name:
             return 1
-        elif msg.forward_from:
-            return msg.forward_from.id
-        elif msg.forward_from_chat:
-            return msg.forward_from_chat.id
+        elif msg_reply.forward_from:
+            return msg_reply.forward_from.id
+        elif msg_reply.forward_from_chat:
+            return msg_reply.forward_from_chat.id
         else:
             return 1
     else:
-        if msg.from_user:
-            return msg.from_user.id
-        elif msg.sender_chat:
-            return msg.sender_chat.id
+        if msg_reply.from_user:
+            return msg_reply.from_user.id
+        elif msg_reply.sender_chat:
+            return msg_reply.sender_chat.id
         else:
             return 1
+
 
 async def get_message_sender_name(msg: Message):
-    if msg.forward_date:
-        if msg.forward_sender_name:
-            return msg.forward_sender_name
-        elif msg.forward_from:
-            if msg.forward_from.last_name:
-                return f"{msg.forward_from.first_name} {msg.forward_from.last_name}"
+    msg_reply = msg.reply_to_message
+    if msg_reply.forward_date:
+        if msg_reply.forward_sender_name:
+            return msg_reply.forward_sender_name
+        elif msg_reply.forward_from:
+            if msg_reply.forward_from.last_name:
+                return f"{msg_reply.forward_from.first_name} {msg_reply.forward_from.last_name}"
             else:
-                return m.forward_from.first_name
-        elif msg.forward_from_chat:
-            return msg.forward_from_chat.title
+                return msg_reply.forward_from.first_name
+        elif msg_reply.forward_from_chat:
+            return msg_reply.forward_from_chat.title
         else:
             return ""
     else:
-        if msg.from_user:
-            if msg.from_user.last_name:
-                return f"{msg.from_user.first_name} {msg.from_user.last_name}"
+        if msg_reply.from_user:
+            if msg_reply.from_user.last_name:
+                return f"{msg_reply.from_user.first_name} {msg_reply.from_user.last_name}"
             else:
-                return msg.from_user.first_name
-        elif msg.sender_chat:
-            return msg.sender_chat.title
+                return msg_reply.from_user.first_name
+        elif msg_reply.sender_chat:
+            return msg_reply.sender_chat.title
         else:
             return ""
+
 
 async def get_message_sender_username(msg: Message):
-    if m.forward_date:
-        if msg.forward_sender_name:
+    msg_reply = msg.reply_to_message
+    if msg_reply.forward_date:
+        if msg_reply.forward_sender_name:
             return ""
-        elif msg.forward_from:
-            if msg.forward_from.username:
-                return msg.forward_from.username
+        elif msg_reply.forward_from:
+            if msg_reply.forward_from.username:
+                return msg_reply.forward_from.username
             else:
                 return
-        elif msg.forward_from_chat:
-            if msg.forward_from_chat.username:
-                return msg.forward_from_chat.username
+        elif msg_reply.forward_from_chat:
+            if msg_reply.forward_from_chat.username:
+                return msg_reply.forward_from_chat.username
             else:
                 return ""
         else:
             return ""
     else:
-        if msg.from_user:
-            if msg.from_user.username:
-                return msg.from_user.username
+        if msg_reply.from_user:
+            if msg_reply.from_user.username:
+                return msg_reply.from_user.username
             else:
                 return ""
-        elif msg.sender_chat:
-            if msg.sender_chat.username:
-                return msg.sender_chat.username
+        elif msg_reply.sender_chat:
+            if msg_reply.sender_chat.username:
+                return msg_reply.sender_chat.username
             else:
-                return""
+                return ""
         else:
             return ""
 
+
 async def get_message_sender_photo(msg: Message):
-    if msg.forward_date:
-        if msg.forward_sender_name:
+    msg_reply = msg.reply_to_message
+    if msg_replyforward_date:
+        if msg_reply.forward_sender_name:
             return ""
-        elif msg.forward_from:
-            if msg.forward_from.photo:
+        elif msg_reply.forward_from:
+            if msg_reply.forward_from.photo:
                 return {
                     "small_file_id": m.forward_from.photo.small_file_id,
                     "small_photo_unique_id": m.forward_from.photo.small_photo_unique_id,
@@ -102,50 +111,53 @@ async def get_message_sender_photo(msg: Message):
                 }
             else:
                 return ""
-        elif msg.forward_from_chat:
-            if msg.forward_from_chat.photo:
+        elif msg_reply.forward_from_chat:
+            if msg_reply.forward_from_chat.photo:
                 return {
-                    "small_file_id": msg.forward_from_chat.photo.small_file_id,
-                    "small_photo_unique_id": msg.forward_from_chat.photo.small_photo_unique_id,
-                    "big_file_id": msg.forward_from_chat.photo.big_file_id,
-                    "big_photo_unique_id": msg.forward_from_chat.photo.big_photo_unique_id,
+                    "small_file_id": msg_reply.forward_from_chat.photo.small_file_id,
+                    "small_photo_unique_id": msg_reply.forward_from_chat.photo.small_photo_unique_id,
+                    "big_file_id": msg_reply.forward_from_chat.photo.big_file_id,
+                    "big_photo_unique_id": msg_reply.forward_from_chat.photo.big_photo_unique_id,
                 }
             else:
                 return ""
         else:
             return ""
     else:
-        if msg.from_user:
-            if msg.from_user.photo:
+        if msg_reply.from_user:
+            if msg_reply.from_user.photo:
                 return {
-                    "small_file_id": msg.from_user.photo.small_file_id,
-                    "small_photo_unique_id": msg.from_user.photo.small_photo_unique_id,
-                    "big_file_id": msg.from_user.photo.big_file_id,
-                    "big_photo_unique_id": msg.from_user.photo.big_photo_unique_id,
+                    "small_file_id": msg_reply.from_user.photo.small_file_id,
+                    "small_photo_unique_id": msg_reply.from_user.photo.small_photo_unique_id,
+                    "big_file_id": msg_reply.from_user.photo.big_file_id,
+                    "big_photo_unique_id": msg_reply.from_user.photo.big_photo_unique_id,
                 }
             else:
                 return ""
-        elif msg.sender_chat:
-            if msg.sender_chat.photo:
+        elif msg_reply.sender_chat:
+            if msg_reply.sender_chat.photo:
                 return {
-                    "small_file_id": msg.sender_chat.photo.small_file_id,
-                    "small_photo_unique_id": msg.sender_chat.photo.small_photo_unique_id,
-                    "big_file_id": msg.sender_chat.photo.big_file_id,
-                    "big_photo_unique_id": msg.sender_chat.photo.big_photo_unique_id,
+                    "small_file_id": msg_reply.sender_chat.photo.small_file_id,
+                    "small_photo_unique_id": msg_reply.sender_chat.photo.small_photo_unique_id,
+                    "big_file_id": msg_reply.sender_chat.photo.big_file_id,
+                    "big_photo_unique_id": msg_reply.sender_chat.photo.big_photo_unique_id,
                 }
             else:
                 return ""
         else:
             return ""
 
+
 async def get_text_or_caption(msg: Message):
-    if msg.text:
-        return msg.text
-    elif msg.caption:
-        return msg.caption
+    msg_reply = msg.reply_to_message
+    if msg_reply.text:
+        return msg_reply.text
+    elif msg_reply.caption:
+        return msg_reply.caption
     else:
         return ""
- 
+
+
 async def pyrogram_to_quotly(messages):
     if not isinstance(messages, list):
         messages = [messages]
@@ -183,16 +195,10 @@ async def pyrogram_to_quotly(messages):
         the_message_dict_to_append["avatar"] = True
         the_message_dict_to_append["from"] = {}
         the_message_dict_to_append["from"]["id"] = await get_message_sender_id(message)
-        the_message_dict_to_append["from"]["name"] = await get_message_sender_name(
-            message
-        )
-        the_message_dict_to_append["from"][
-            "username"
-        ] = await get_message_sender_username(message)
+        the_message_dict_to_append["from"]["name"] = await get_message_sender_name(message)
+        the_message_dict_to_append["from"]["username"] = await get_message_sender_username(message)
         the_message_dict_to_append["from"]["type"] = message.chat.type
-        the_message_dict_to_append["from"]["photo"] = await get_message_sender_photo(
-            message
-        )
+        the_message_dict_to_append["from"]["photo"] = await get_message_sender_photo(message)
         if message.reply_to_message:
             the_message_dict_to_append["replyMessage"] = {
                 "name": await get_message_sender_name(message.reply_to_message),
@@ -209,6 +215,7 @@ async def pyrogram_to_quotly(messages):
         else:
             raise QuotlyException(data.json())
 
+
 def isArgInt(txt) -> list:
     count = txt
     try:
@@ -217,10 +224,15 @@ def isArgInt(txt) -> list:
     except ValueError:
         return [False, 0]
 
-@userge.on_cmd("q", about={
-    'header': "Quotly-ify a nice quote",
-    'description': "Make an quote sticker like a Quotly.",
-    'usage': "{tr}q [reply to message]"})
+
+@userge.on_cmd(
+    "q",
+    about={
+        "header": "Quotly-ify a nice quote",
+        "description": "Make an quote sticker like a Quotly.",
+        "usage": "{tr}q [reply to message]",
+    },
+)
 async def quotly_cmd(msg: Message):
     if len(msg.text.split()) > 1:
         check_arg = isArgInt(msg.command[1])
@@ -235,7 +247,7 @@ async def quotly_cmd(msg: Message):
                             chat_id=msg.chat.id,
                             message_ids=range(
                                 msg.reply_to_message.message_id,
-                                msg.reply_to_message.message_id + (check_arg[1] + 5),
+                                msg.message_id + (check_arg[1] + 5),
                             ),
                             replies=-1,
                         )
@@ -258,7 +270,7 @@ async def quotly_cmd(msg: Message):
         )
         messages = [messages_one]
     except:
-        return await msg.reply_text("¯\\_(ツ)_/¯")
+        return await msg.edit("¯\\_(ツ)_/¯")
     try:
         make_quotly = await pyrogram_to_quotly(messages)
         bio_sticker = BytesIO(make_quotly)
