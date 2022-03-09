@@ -1,0 +1,1 @@
+"""Quotly-ify module init."""
