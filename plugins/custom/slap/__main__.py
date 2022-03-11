@@ -9,7 +9,6 @@
 # All rights reserved.
 
 import aiohttp
-import json
 
 from userge import userge, Message
 
