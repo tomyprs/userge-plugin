@@ -30,6 +30,6 @@ async def _slap(msg: Message):
     async with aiohttp.ClientSession() as ses:
         async with ses.get("https://www.nekos.life/api/v2/img/slap") as nf:
             if nf.status != 200:
-                return await message.edit("__Something went wrong..__")
+                return await msg.edit("__Something went wrong..__")
             else:
-                return await message.reply_to_message.reply_animation(data["url"])
+                return await msg.reply_to_message.reply_animation(data["url"])
