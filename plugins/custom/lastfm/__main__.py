@@ -10,7 +10,7 @@
 
 
 from userge import Message, userge
-from userge.plugins.sys_util.helper import AioHttp as get_response
+from . import AioHttp as get_response
 from . import LASTFM_USERNAME, LASTFM_API_KEY
 
 API = "http://ws.audioscrobbler.com/2.0"
