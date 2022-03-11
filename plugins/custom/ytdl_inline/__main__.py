@@ -25,7 +25,7 @@ from wget import download
 from yt_dlp.utils import DownloadError, ExtractorError, GeoRestrictedError
 from youtubesearchpython import VideosSearch
 
-from userge import Config, Message, pool, userge
+from userge import Message, pool, userge
 from userge.utils import (
     check_owner,
     get_file_id,
@@ -181,7 +181,7 @@ if userge.has_bot:
         callback_continue = f"Downloading {media_type} Please Wait..."
         callback_continue += f"\n\nFormat Code : {disp_str}"
         await c_q.answer(callback_continue, show_alert=True)
-        upload_msg = await userge.send_message(Config.LOG_CHANNEL_ID, "Uploading...")
+        upload_msg = await userge.send_message(config.LOG_CHANNEL_ID, "Uploading...")
         yt_url = BASE_YT_URL + yt_code
         await c_q.edit_message_text(
             text=(
@@ -197,7 +197,7 @@ if userge.has_bot:
             return await upload_msg.edit(str(retcode))
         _fpath = ""
         thumb_pic = None
-        for _path in glob.glob(os.path.join(Config.DOWN_PATH, str(startTime), "*")):
+        for _path in glob.glob(os.path.join(config.DOWN_PATH, str(startTime), "*")):
             if _path.lower().endswith((".jpg", ".png", ".webp")):
                 thumb_pic = _path
             else:
@@ -217,7 +217,7 @@ if userge.has_bot:
             log=False,
         )
         refresh_vid = await userge.bot.get_messages(
-            Config.LOG_CHANNEL_ID, uploaded_media.message_id
+            config.LOG_CHANNEL_ID, uploaded_media.message_id
         )
         f_id = get_file_id(refresh_vid)
         if downtype == "v":
@@ -357,7 +357,7 @@ def _tubeDl(url: str, starttime, uid: str):
         "geo_bypass": True,
         "nocheckcertificate": True,
         "outtmpl": os.path.join(
-            Config.DOWN_PATH, str(starttime), "%(title)s-%(format)s.%(ext)s"
+            config.DOWN_PATH, str(starttime), "%(title)s-%(format)s.%(ext)s"
         ),
         "logger": LOGGER,
         "format": uid,
@@ -386,7 +386,7 @@ def _tubeDl(url: str, starttime, uid: str):
 @pool.run_in_thread
 def _mp3Dl(url: str, starttime, uid: str):
     _opts = {
-        "outtmpl": os.path.join(Config.DOWN_PATH, str(starttime), "%(title)s.%(ext)s"),
+        "outtmpl": os.path.join(config.DOWN_PATH, str(starttime), "%(title)s.%(ext)s"),
         "logger": LOGGER,
         "writethumbnail": True,
         "prefer_ffmpeg": True,
