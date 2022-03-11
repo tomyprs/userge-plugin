@@ -32,4 +32,5 @@ async def _slap(msg: Message):
             if nf.status != 200:
                 return await msg.edit("__Something went wrong..__")
             else:
+                data = await nf.json()
                 return await msg.reply_to_message.reply_animation(data["url"])
