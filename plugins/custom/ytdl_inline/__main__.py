@@ -27,16 +27,16 @@ from youtubesearchpython import VideosSearch
 
 from userge import Message, pool, userge
 from userge.utils import (
-    check_owner,
     get_file_id,
-    get_response,
     humanbytes,
     post_to_telegraph,
-    rand_key,
     sublists,
 )
 
-from ..misc.upload import upload
+from userge.plugins.misc.upload import upload
+from . import rand_key, check_owner
+from ..lastfm import AioHttp as get_response
+
 
 LOGGER = userge.getLogger(__name__)
 BASE_YT_URL = "https://www.youtube.com/watch?v="
