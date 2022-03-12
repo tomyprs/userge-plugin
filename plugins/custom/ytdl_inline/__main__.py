@@ -27,14 +27,13 @@ from youtubesearchpython import VideosSearch
 
 from userge import Message, pool, userge
 from userge.utils import (
-    get_file_id,
     humanbytes,
     post_to_telegraph,
     sublists,
 )
 
 from userge.plugins.misc.upload import upload
-from . import rand_key, check_owner
+from . import rand_key, check_owner, get_file_id
 from ..lastfm import AioHttp as get_response
 
 
