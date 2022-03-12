@@ -2,6 +2,7 @@
 
 from uuid import uuid4
 from typing import Optional
+from html_telegraph_poster import TelegraphPoster
 
 def rand_key():
     return str(uuid4())[:8]
@@ -28,20 +29,15 @@ def check_owner(func):
 def sublists(input_list: list, width: int = 3):
     return [input_list[x : x + width] for x in range(0, len(input_list), width)]
 
-def get_file_id(
-    message: "userge.Message",
-) -> Optional[str]:
-    """get file_id"""
-    if message is None:
-        return
-    file_ = (
-        message.audio
-        or message.animation
-        or message.photo
-        or message.sticker
-        or message.voice
-        or message.video_note
-        or message.video
-        or message.document
+def post_to_telegraph(a_title: str, content: str) -> str:
+    """Create a Telegram Post using HTML Content"""
+    post_client = TelegraphPoster(use_api=True)
+    auth_name = "USERGE-𝑿"
+    post_client.create_api_token(auth_name)
+    post_page = post_client.post(
+        title=a_title,
+        author=auth_name,
+        author_url="https://t.me/x_xtests",
+        text=content,
     )
-    return file_.file_id if file_ else None
+    return post_page["url"]
