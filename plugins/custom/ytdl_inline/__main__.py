@@ -33,7 +33,7 @@ from userge.utils import (
 )
 
 from userge.plugins.misc.upload import upload
-from . import rand_key, check_owner
+from . import rand_key, check_owner, post_to_telegraph
 from ..lastfm import AioHttp as get_response
 
 
