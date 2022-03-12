@@ -32,12 +32,12 @@ def sublists(input_list: list, width: int = 3):
 def post_to_telegraph(a_title: str, content: str) -> str:
     """Create a Telegram Post using HTML Content"""
     post_client = TelegraphPoster(use_api=True)
-    auth_name = "USERGE-𝑿"
+    auth_name = "virusberdana"
     post_client.create_api_token(auth_name)
     post_page = post_client.post(
         title=a_title,
         author=auth_name,
-        author_url="https://t.me/x_xtests",
+        author_url="https://t.me/virusberdana",
         text=content,
     )
     return post_page["url"]
