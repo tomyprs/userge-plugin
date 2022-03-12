@@ -3,6 +3,8 @@
 from uuid import uuid4
 from typing import Optional
 from html_telegraph_poster import TelegraphPoster
+from pyrogram.types import CallbackQuery
+
 
 def rand_key():
     return str(uuid4())[:8]
