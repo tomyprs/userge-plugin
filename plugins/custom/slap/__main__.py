@@ -14,7 +14,7 @@ from userge import userge, Message
 
 
 @userge.on_cmd(
-    "slap",
+    "aslap",
     about={
         "header": "slap user using neko gif.",
         "description": "Slaping user with randomly gif from neko.",
